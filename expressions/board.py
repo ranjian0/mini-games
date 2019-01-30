@@ -6,27 +6,31 @@ from collections import Counter
 class Tile:
     TILE_SIZE = (100, 100)
 
+    DEFAULT = 32
+    FAIL = 33
+    PASS = 34
+
     def __init__(self, pos, value):
         self.pos = pos
         self.value = value
 
-        self.tile = self.make_image()
-        self.tile_rect = self.tile.get_rect(center=self.pos)
+        self.tile_yellow = pg.image.load("res/tile_yellow.png")
+        self.tile_green = pg.image.load("res/tile_green.png")
+        self.tile_hover = pg.image.load("res/tile_hover.png")
+        self.tile_red = pg.image.load("res/tile_red.png")
+
+        self.tile_rect = self.tile_yellow.get_rect(center=self.pos)
         self.text, self.text_rect = self.make_text()
 
         # Tile states
-        self.default = True
         self.hover = False
+        self.tile_status = self.DEFAULT
 
-    def make_image(self, border_color=pg.Color('black'), fill_color=pg.Color('tomato')):
-        image = pg.Surface(self.TILE_SIZE).convert_alpha()
-        image.fill((0, 0, 0, 0))
-        rect = image.get_rect()
+    def set_fail(self):
+        self.tile_status = self.FAIL
 
-        pg.draw.ellipse(image, border_color, rect)
-        pg.draw.ellipse(image, fill_color, rect.inflate(-12, -12))
-
-        return image
+    def set_pass(self):
+        self.tile_status = self.PASS
 
     def make_text(self):
         font = pg.font.SysFont('sans serif', 50)
@@ -36,7 +40,16 @@ class Tile:
         return label, label_rect
 
     def draw(self, surface):
-        surface.blit(self.tile, self.tile_rect)
+        tile = {
+            self.DEFAULT : self.tile_yellow,
+            self.FAIL : self.tile_red,
+            self.PASS : self.tile_green,
+        }.get(self.tile_status)
+
+        surface.blit(tile, tile.get_rect(center=self.pos))
+        if self.hover:
+            surface.blit(self.tile_hover, self.tile_hover.get_rect(center=self.pos))
+
         surface.blit(self.text, self.text_rect)
 
     def update(self):
@@ -44,17 +57,7 @@ class Tile:
         if self.tile_rect.collidepoint(pos):
             self.hover = True
         else:
-            self.default = True
-
-        # Change the tile appearance
-        if self.default:
-            self.tile = self.make_image(pg.Color('black'))
-            self.tile_rect = self.tile.get_rect(center=self.pos)
-        if self.hover:
-            self.tile = self.make_image(pg.Color('white'))
-            self.tile_rect = self.tile.get_rect(center=self.pos)
-
-        self.default, self.hover = (False, False)
+            self.hover = False
 
 
 class Target(object):
@@ -154,11 +157,13 @@ class Board(object):
         for tile in self.tiles:
             if tile.tile_rect.collidepoint(*pos):
                 if tile.value == self.target.result:
+                    tile.set_pass()
                     self.board_score += 1
                     t.add_timer(25)
                     self.reset()
                 else:
-                    pass
+                    tile.set_fail()
+                    t.subtract_timer(10)
 
     def draw(self, surface):
         self.target.draw(surface)

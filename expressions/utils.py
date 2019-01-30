@@ -53,6 +53,14 @@ class Timer:
         else:
             self.timer_size += d
 
+    def subtract_timer(self, d):
+
+        if (self.timer_size - d) < 0:
+            self.timer_size = 0
+        else:
+            self.timer_size -= d
+
+
 
 class MainMenu(Menu):
     active = True
@@ -60,13 +68,12 @@ class MainMenu(Menu):
     def __init__(self, screen):
         Menu.__init__(self, screen)
 
-        # Add background Color
-        self.color = pg.Color("grey")
+        # Add background Image
+        self.image = pg.image.load("res/mainmenu_background.png")
 
         # Add widgets
-        self.title = Label((250, 50), "EXPRESSIONS", font_size=70, font_color=pg.Color("maroon"))
-        self.play_btn = Button((250, 150), (250, 50), "PLAY", pg.Color("white"), pg.Color("maroon"), pg.Color("red"))
-        self.exit_btn = Button((250, 250), (250, 50), "EXIT", pg.Color("white"), pg.Color("maroon"), pg.Color("red"))
+        self.play_btn = Button((250, 200), (250, 50), "PLAY", pg.Color("white"), pg.Color("maroon"), pg.Color("red"))
+        self.exit_btn = Button((250, 300), (250, 50), "EXIT", pg.Color("white"), pg.Color("maroon"), pg.Color("red"))
         credit = """
         Created by
         Ian Ichung'wah Karanja
@@ -76,7 +83,6 @@ class MainMenu(Menu):
         self.highscore = MultiLineLabel((150, 0), "", valign="BOTTOM", font_size=20, font_color=pg.Color("red"))
 
         # Add widgets to menu canvas
-        self.add(self.title)
         self.add(self.play_btn)
         self.add(self.exit_btn)
         self.add(self.credit)
