@@ -81,7 +81,7 @@ class Target(object):
         self.text, self.text_rect = self.setup_font()
 
     def generate_expression(self):
-        fnum, snum = [random.randint(0, 50) for _ in range(2)]
+        fnum, snum = [random.randint(11, 99) for _ in range(2)]
 
         if fnum < snum:
             fnum, snum = snum, fnum
