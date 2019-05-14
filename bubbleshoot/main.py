@@ -5,7 +5,7 @@ from player import Player
 from enemy import EnemySpawner
 from utils import DamageBar, MenuSystem, media_path
 
-TITLE = "Bubble Shoot"
+TITLE = "BubbleShoot"
 SIZE = (0, 0)
 FPS = 60
 
@@ -31,7 +31,9 @@ class Game:
         self.font = pg.font.Font(None, 30)
 
         # Load cursor
-        self.game_cursor = pg.cursors.load_xbm(media_path("cursor.xbm"), media_path("cursor-mask.xbm"))
+        self.game_cursor = pg.cursors.load_xbm(
+            media_path("cursor.xbm"), media_path("cursor-mask.xbm")
+        )
 
     def reset(self):
         self.espawner.enemies_killed = 0
@@ -47,12 +49,14 @@ class Game:
     def events(self):
         for event in pg.event.get():
             # Quit Events
-            if event.type == pg.QUIT or (event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE):
+            if event.type == pg.QUIT or (
+                event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE
+            ):
                 self.running = False
 
             # Resize Events
             if event.type == pg.VIDEORESIZE:
-                self.screen = pg.display.set_mode(event.dict['size'], pg.RESIZABLE, 32)
+                self.screen = pg.display.set_mode(event.dict["size"], pg.RESIZABLE, 32)
                 pg.display.update()
 
             # Pause Menu
@@ -87,7 +91,9 @@ class Game:
 
             # Draw Score
             size = pg.display.get_surface().get_size()
-            score_surf = self.font.render("Score  {} ".format(self.score), True, (255, 255, 255))
+            score_surf = self.font.render(
+                "Score  {} ".format(self.score), True, (255, 255, 255)
+            )
             self.screen.blit(score_surf, (size[0] - 200, 15))
 
             # Draw player and player bullets
@@ -141,8 +147,8 @@ class Game:
             dt = self.clock.tick(FPS) / 1000.0
 
 
-if __name__ == '__main__':
-    os.environ['SDL_VIDEO_CENTERED'] = '1'
+if __name__ == "__main__":
+    os.environ["SDL_VIDEO_CENTERED"] = "1"
 
     g = Game()
     g.run()

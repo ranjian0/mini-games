@@ -23,12 +23,12 @@ def random_pos(target, dist):
 
 
 def media_path(fn):
-    path = os.path.join(os.path.dirname(__file__), 'media')
+    path = os.path.join(os.path.dirname(__file__), "media")
     return os.path.join(path, fn)
 
 
 class Bullet(Sprite):
-    def __init__(self, pos, angle, color=pg.Color('black')):
+    def __init__(self, pos, angle, color=pg.Color("black")):
         Sprite.__init__(self)
 
         size = (5, 5)
@@ -63,7 +63,7 @@ class Bullet(Sprite):
 
 
 class DamageBar(Sprite):
-    def __init__(self, pos, size=(200, 25), color=pg.Color('green')):
+    def __init__(self, pos, size=(200, 25), color=pg.Color("green")):
         Sprite.__init__(self)
 
         self.size = size
@@ -135,11 +135,11 @@ class MainMenu:
         self.options = [
             Option("PLAY GAME", (off_x, off_y - 80), self.font),
             Option("CREDITS", (off_x, off_y), self.font),
-            Option("EXIT", (off_x, off_y + 80), self.font)
+            Option("EXIT", (off_x, off_y + 80), self.font),
         ]
 
         # Title image
-        self.title = pg.image.load(media_path('title.png'))
+        self.title = pg.image.load(media_path("title.png"))
         self.title_rect = self.title.get_rect(center=(off_x, 70))
 
     def draw(self, *args):
@@ -191,9 +191,7 @@ class Credits:
         self.font = pg.font.Font(None, 72)
         pad_x = (size[0] - self.font.size("BACK")[0]) / 2
 
-        self.options = [
-            Option("BACK", (100, size[1] - 50), self.font),
-        ]
+        self.options = [Option("BACK", (100, size[1] - 50), self.font)]
 
     def draw(self, *args):
         # Draw Credits Text
@@ -206,7 +204,9 @@ class Credits:
             l_size = self._font.size(l)[0]
             off_x = (size[0] - l_size) / 2
 
-            screen.blit(self._font.render(l, True, (232, 122, 49)), (off_x, 10 + (idx * 30)))
+            screen.blit(
+                self._font.render(l, True, (232, 122, 49)), (off_x, 10 + (idx * 30))
+            )
 
         # Draw Back button
         for option in self.options:
@@ -234,12 +234,12 @@ class GameOver:
         self.options = [
             Option("RESTART", (off_x, self.size[1] - 250), self.font),
             Option("MAIN MENU", (off_x, self.size[1] - 150), self.font),
-            Option("EXIT", (off_x, self.size[1] - 50), self.font)
+            Option("EXIT", (off_x, self.size[1] - 50), self.font),
         ]
 
         # Title image
-        path = os.path.join(os.path.dirname(__file__), 'media')
-        file = 'title.png'
+        path = os.path.join(os.path.dirname(__file__), "media")
+        file = "title.png"
         self.title = pg.image.load(os.path.join(path, file))
         self.title_rect = self.title.get_rect(center=(off_x, 70))
 
@@ -297,12 +297,7 @@ class MenuSystem:
 
         self.active = True
         self.active_menu = 0
-        self.menus = [
-            MainMenu(),
-            Credits(),
-            GameOver(),
-            PauseMenu()
-        ]
+        self.menus = [MainMenu(), Credits(), GameOver(), PauseMenu()]
 
         # Game State
         self.quit = False

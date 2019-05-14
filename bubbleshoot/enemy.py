@@ -17,7 +17,7 @@ class EnemySpawner:
         self.enemies = Group()
 
         self.enemies_killed = 0
-        self.spawn_sound = pg.mixer.Sound(media_path('spawn.wav'))
+        self.spawn_sound = pg.mixer.Sound(media_path("spawn.wav"))
 
     def spawn(self, player_pos):
         self.spawn_sound.play()
@@ -31,7 +31,9 @@ class EnemySpawner:
 
     def update(self, dt, player_pos):
         # Spawn when time is zero and after every 5 secs (roughy 5 seconds)
-        if self.time == 50 or (self.time > 100 and (self.time % self.spawn_interval) == 0):
+        if self.time == 50 or (
+            self.time > 100 and (self.time % self.spawn_interval) == 0
+        ):
             self.spawn(player_pos)
         self.time += 1
 
@@ -51,7 +53,7 @@ class Enemy(Sprite):
         Sprite.__init__(self)
         self.size = size
 
-        self.original_img = self.make_image(self.size, pg.Color('green'))
+        self.original_img = self.make_image(self.size, pg.Color("green"))
         self.image = self.original_img.copy()
         self.rect = self.image.get_rect(center=pos)
 
@@ -60,7 +62,7 @@ class Enemy(Sprite):
         self.max_health = 100
         self.health = 100
         self.killed = False
-        self.damage_bar = DamageBar(self.rect.topleft, (50, 10), pg.Color('red'))
+        self.damage_bar = DamageBar(self.rect.topleft, (50, 10), pg.Color("red"))
 
         # Patrol Varialbles
         self.patrol_radius = 200
@@ -72,7 +74,7 @@ class Enemy(Sprite):
         self.bullet_interval = 50
         self.bullet_time = 0
 
-        self.shoot = pg.mixer.Sound(media_path('enemy_gunshot.wav'))
+        self.shoot = pg.mixer.Sound(media_path("enemy_gunshot.wav"))
 
     def make_image(self, size, player_color):
 
@@ -82,8 +84,8 @@ class Enemy(Sprite):
         rect = img.get_rect()
         center = rect.center
 
-        pg.draw.rect(img, pg.Color('black'), [center[0] - 5, 40, 10, 40])
-        pg.draw.ellipse(img, pg.Color('black'), rect.inflate(-10, -10))
+        pg.draw.rect(img, pg.Color("black"), [center[0] - 5, 40, 10, 40])
+        pg.draw.ellipse(img, pg.Color("black"), rect.inflate(-10, -10))
         pg.draw.ellipse(img, player_color, rect.inflate(-20, -20))
         return img
 
@@ -140,7 +142,12 @@ class Enemy(Sprite):
         self.move_to(cpoint, dt)
 
         # Update patrol point if we reached it
-        if pg.math.Vector2(cpoint[0] - self.rect.centerx, cpoint[1] - self.rect.centery).length() < 10:
+        if (
+            pg.math.Vector2(
+                cpoint[0] - self.rect.centerx, cpoint[1] - self.rect.centery
+            ).length()
+            < 10
+        ):
             self.current_patrol += 1
 
     def chase(self, dt, player_pos):
@@ -187,10 +194,15 @@ class Enemy(Sprite):
         if self.bullet_time % self.bullet_interval == 0:
             self.shoot.play()
             pos = pg.mouse.get_pos()
-            vec = pg.math.Vector2(pos[0] - self.true_pos[0], pos[1] - self.true_pos[1]).normalize()
-            gun_pos = (self.rect.centerx + (vec.x * 25), self.rect.centery + (vec.y * 25))
+            vec = pg.math.Vector2(
+                pos[0] - self.true_pos[0], pos[1] - self.true_pos[1]
+            ).normalize()
+            gun_pos = (
+                self.rect.centerx + (vec.x * 25),
+                self.rect.centery + (vec.y * 25),
+            )
 
-            b = Bullet(gun_pos, self.angle, color=pg.Color('red'))
+            b = Bullet(gun_pos, self.angle, color=pg.Color("red"))
             self.bullets.add(b)
         self.bullet_time += 1
 

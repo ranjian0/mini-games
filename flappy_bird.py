@@ -5,25 +5,18 @@ import pymunk as pm
 
 from pymunk import pygame_util as putils
 
-FPS         = 60
-SIZE        = 400, 500
-CAPTION     = "Flappy Bird"
-BACKGROUND  = (100, 100, 100)
+FPS = 60
+SIZE = 400, 500
+CAPTION = "Flappy Bird"
+BACKGROUND = (100, 100, 100)
 
-PHYSICS_STEP  = 50
-COLLISION_MAP = {
-    "BirdType"   : 1,
-    "BlockType"  : 2,
-    "GroundType" : 3,
-    "PointType"  : 4
-}
+PHYSICS_STEP = 50
+COLLISION_MAP = {"BirdType": 1, "BlockType": 2, "GroundType": 3, "PointType": 4}
 
 putils.positive_y_is_up = False
 
-EVENT_MAP = {
-    "ScoreEvent"    : pg.USEREVENT + 1,
-    "GameOverEvent" : pg.USEREVENT + 2,
-}
+EVENT_MAP = {"ScoreEvent": pg.USEREVENT + 1, "GameOverEvent": pg.USEREVENT + 2}
+
 
 def main():
     pg.init()
@@ -31,16 +24,16 @@ def main():
     score = 0
 
     screen = pg.display.set_mode(SIZE, 0, 32)
-    clock  = pg.time.Clock()
+    clock = pg.time.Clock()
 
     space = pm.Space()
     space.gravity = (0.0, 20.0)
 
-    bird   = Bird(20, (150, 200), space)
+    bird = Bird(20, (150, 200), space)
     blocks = Blocks(space=space)
 
     gamestarted = False
-    gameover    = False
+    gameover = False
 
     add_ground(space)
     setup_collisions(space, blocks, bird)
@@ -51,7 +44,8 @@ def main():
         for event in pg.event.get():
             QUIT_COND = [
                 event.type == pg.QUIT,
-                event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE]
+                event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE,
+            ]
 
             if any(QUIT_COND):
                 pg.quit()
@@ -91,7 +85,6 @@ def main():
         else:
             draw_start_screen(screen)
 
-
         # options = putils.DrawOptions(screen)
         # space.debug_draw(options)
 
@@ -106,16 +99,19 @@ def main():
             bird.update(dt)
             blocks.update(dt, bird)
 
+
 def post_score():
     score_event = pg.event.Event(EVENT_MAP.get("ScoreEvent"))
     pg.event.post(score_event)
+
 
 def post_gameover():
     over_event = pg.event.Event(EVENT_MAP.get("GameOverEvent"))
     pg.event.post(over_event)
 
+
 def draw_start_screen(surface):
-    font_name   = pg.font.match_font('arial')
+    font_name = pg.font.match_font("arial")
 
     # -- title
     font = pg.font.Font(font_name, 40)
@@ -123,7 +119,7 @@ def draw_start_screen(surface):
 
     surf = font.render(CAPTION, True, pg.Color("yellow"))
     rect = surf.get_rect()
-    rect.center = (SIZE[0]//2, 50)
+    rect.center = (SIZE[0] // 2, 50)
     surface.blit(surf, rect)
 
     # -- instructions
@@ -132,47 +128,47 @@ def draw_start_screen(surface):
     txt = "Space to Start"
     surf = font.render(txt, True, pg.Color("white"))
     rect = surf.get_rect()
-    rect.center = (SIZE[0]//2, SIZE[1]//2)
+    rect.center = (SIZE[0] // 2, SIZE[1] // 2)
     surface.blit(surf, rect)
 
+
 def draw_game_over(surface, score):
-    font_name   = pg.font.match_font('arial')
+    font_name = pg.font.match_font("arial")
 
     # -- Draw Game Over Text
-    font        = pg.font.Font(font_name, 40)
+    font = pg.font.Font(font_name, 40)
     font.set_bold(True)
 
-    tsurface    = font.render("GAME OVER", True, pg.Color('red'))
-    text_rect   = tsurface.get_rect()
-    text_rect.center = (SIZE[0]//2, 100)
+    tsurface = font.render("GAME OVER", True, pg.Color("red"))
+    text_rect = tsurface.get_rect()
+    text_rect.center = (SIZE[0] // 2, 100)
     surface.blit(tsurface, text_rect)
 
-
     # -- Draw score text
-    font        = pg.font.Font(font_name, 20)
+    font = pg.font.Font(font_name, 20)
     font.set_bold(True)
 
-    tsurface    = font.render("Your Score " + str(score), True, pg.Color('white'))
-    text_rect   = tsurface.get_rect()
-    text_rect.center = (SIZE[0]//2, 200)
+    tsurface = font.render("Your Score " + str(score), True, pg.Color("white"))
+    text_rect = tsurface.get_rect()
+    text_rect.center = (SIZE[0] // 2, 200)
     surface.blit(tsurface, text_rect)
 
     # -- Draw instructions
-    font        = pg.font.Font(font_name, 12)
+    font = pg.font.Font(font_name, 12)
     font.set_bold(True)
     font.set_italic(True)
 
-    tsurface    = font.render("Press Escape to QUIT, Space to RESTART", True, pg.Color('white'))
-    text_rect   = tsurface.get_rect()
-    text_rect.center = (SIZE[0]//2, SIZE[1]-20)
+    tsurface = font.render(
+        "Press Escape to QUIT, Space to RESTART", True, pg.Color("white")
+    )
+    text_rect = tsurface.get_rect()
+    text_rect.center = (SIZE[0] // 2, SIZE[1] - 20)
     surface.blit(tsurface, text_rect)
 
+
 def draw_score(surface, score):
-    font_name   = pg.font.match_font('arial')
-    options = [
-        ("Score",    12, (25, 12), "black"),
-        (str(score), 15, (17, 30), "white"),
-    ]
+    font_name = pg.font.match_font("arial")
+    options = [("Score", 12, (25, 12), "black"), (str(score), 15, (17, 30), "white")]
 
     # -- header highlight
     pg.draw.rect(surface, (80, 80, 80), [10, 20, 50, 20])
@@ -189,15 +185,16 @@ def draw_score(surface, score):
 
         surface.blit(surf, rect)
 
+
 def add_ground(space):
     w, h = SIZE[0], 20
     shape = pm.Poly.create_box(space.static_body, size=(w, h))
-    shape.body.position  = (w/2, SIZE[1]+h/2)
+    shape.body.position = (w / 2, SIZE[1] + h / 2)
     shape.collision_type = COLLISION_MAP.get("GroundType")
     space.add(shape)
 
-def setup_collisions(space, blocks, bird):
 
+def setup_collisions(space, blocks, bird):
     def bird_ground_solve(arbiter, space, data):
         bird.deactivate()
         blocks.deactivate()
@@ -205,9 +202,8 @@ def setup_collisions(space, blocks, bird):
         return True
 
     bghandler = space.add_collision_handler(
-            COLLISION_MAP.get("BirdType"),
-            COLLISION_MAP.get("GroundType")
-        )
+        COLLISION_MAP.get("BirdType"), COLLISION_MAP.get("GroundType")
+    )
     bghandler.begin = bird_ground_solve
 
     def bird_block_solve(arbiter, space, data):
@@ -217,21 +213,20 @@ def setup_collisions(space, blocks, bird):
         return True
 
     bbhandler = space.add_collision_handler(
-            COLLISION_MAP.get("BirdType"),
-            COLLISION_MAP.get("BlockType")
-        )
+        COLLISION_MAP.get("BirdType"), COLLISION_MAP.get("BlockType")
+    )
     bbhandler.begin = bird_block_solve
 
-class Bird:
 
+class Bird:
     def __init__(self, size, pos, space):
-        self.pos   = pos
-        self.size  = size
+        self.pos = pos
+        self.size = size
 
         self.body = pm.Body(1, 1)
         self.body.position = pos
 
-        self.shape = pm.Circle(self.body, size/2)
+        self.shape = pm.Circle(self.body, size / 2)
         self.shape.collision_type = COLLISION_MAP.get("BirdType")
         self.shape.filter = pm.ShapeFilter()
         space.add(self.body, self.shape)
@@ -255,7 +250,7 @@ class Bird:
         px, py = tuple(map(int, self.body.position))
 
         pg.draw.circle(surface, pg.Color("yellow"), (px, py), r)
-        pg.draw.rect(surface, pg.Color("black"), [px, py-(r/4), r, r/2])
+        pg.draw.rect(surface, pg.Color("black"), [px, py - (r / 4), r, r / 2])
 
     def event(self, ev):
         if ev.type == pg.KEYDOWN:
@@ -265,9 +260,9 @@ class Bird:
     def update(self, dt):
         pass
 
-class Blocks:
 
-    def __init__(self, width = 30, gap = 100, space=None):
+class Blocks:
+    def __init__(self, width=30, gap=100, space=None):
         self.width = width
         self.gap = gap
         self.speed = 20
@@ -276,7 +271,7 @@ class Blocks:
         self.goal = None
         self.goal_index = 0
         self.blocks = []
-        self.spawn_time  = 0
+        self.spawn_time = 0
         self.spawn_delay = 100
         self.spawn()
 
@@ -285,39 +280,39 @@ class Blocks:
 
     def make_image(self):
         m = 6
-        w, h = self.width, SIZE[1]*2
-        surf = pg.Surface((w+m, h+m)).convert_alpha()
+        w, h = self.width, SIZE[1] * 2
+        surf = pg.Surface((w + m, h + m)).convert_alpha()
         surf.fill((0, 0, 0, 0))
 
         # -- top block
-        top = int(h/2) - int(self.gap/2)
-        pg.draw.rect(surf, pg.Color("black"), [0, 0, w+m, top+m])
-        pg.draw.rect(surf, pg.Color("green"), [m/2, m/2, w, top])
+        top = int(h / 2) - int(self.gap / 2)
+        pg.draw.rect(surf, pg.Color("black"), [0, 0, w + m, top + m])
+        pg.draw.rect(surf, pg.Color("green"), [m / 2, m / 2, w, top])
 
         # -- bottom block
-        bot = int(h/2) + int(self.gap/2)
-        pg.draw.rect(surf, pg.Color("black"), [0, bot, w+m, h+m])
-        pg.draw.rect(surf, pg.Color("green"), [m/2, bot+m/2, w, h])
+        bot = int(h / 2) + int(self.gap / 2)
+        pg.draw.rect(surf, pg.Color("black"), [0, bot, w + m, h + m])
+        pg.draw.rect(surf, pg.Color("green"), [m / 2, bot + m / 2, w, h])
 
         return surf
 
     def make_block(self, pos):
-        w, h   = self.width, SIZE[1]*2
+        w, h = self.width, SIZE[1] * 2
         px, py = pos
 
         # Top Block
-        tbody  = pm.Body(body_type=pm.Body.KINEMATIC)
-        tbody.position  = (px, py-((h/2) + (self.gap/2)))
+        tbody = pm.Body(body_type=pm.Body.KINEMATIC)
+        tbody.position = (px, py - ((h / 2) + (self.gap / 2)))
 
-        tshape = pm.Poly.create_box(tbody, size=(w,h))
+        tshape = pm.Poly.create_box(tbody, size=(w, h))
         tshape.collision_type = COLLISION_MAP.get("BlockType")
         self.space.add(tbody, tshape)
 
         # Bottom Block
         bbody = pm.Body(body_type=pm.Body.KINEMATIC)
-        bbody.position  = (px, py+((h/2) + (self.gap/2)))
+        bbody.position = (px, py + ((h / 2) + (self.gap / 2)))
 
-        bshape = pm.Poly.create_box(bbody, size=(w,h))
+        bshape = pm.Poly.create_box(bbody, size=(w, h))
         bshape.collision_type = COLLISION_MAP.get("BlockType")
         self.space.add(bbody, bshape)
 
@@ -326,10 +321,10 @@ class Blocks:
         self.blocks.append([bshape, tshape])
 
     def make_goal(self):
-        mean_pos = lambda s: (s[0].body.position+s[1].body.position)/2
+        mean_pos = lambda s: (s[0].body.position + s[1].body.position) / 2
         pos = mean_pos(self.blocks[self.goal_index])
 
-        return pg.Rect(pos.x+self.width/2, pos.y-self.gap/2, 25, self.gap)
+        return pg.Rect(pos.x + self.width / 2, pos.y - self.gap / 2, 25, self.gap)
 
     def deactivate(self):
         self.active = False
@@ -361,7 +356,7 @@ class Blocks:
         # if self.goal:
         #     pg.draw.rect(surface, pg.Color("red"), self.goal, 2)
         for bblock, tblock in self.blocks:
-            p = ((bblock.body.position + tblock.body.position)/2)
+            p = (bblock.body.position + tblock.body.position) / 2
             self.draw_block(surface, (p.x, p.y))
 
     def update(self, dt, bird):
@@ -381,7 +376,7 @@ class Blocks:
             post_score()
 
         # remove blocks out of view
-        mean_pos = lambda s: (s[0].body.position+s[1].body.position)/2
+        mean_pos = lambda s: (s[0].body.position + s[1].body.position) / 2
         for shape in [s for b in self.blocks for s in b]:
             if shape.body.position.x < 0:
                 if shape.body in self.space.bodies:
@@ -393,5 +388,6 @@ class Blocks:
                 self.goal_index -= 1
                 break
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

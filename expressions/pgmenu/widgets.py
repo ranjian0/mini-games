@@ -2,7 +2,9 @@ import pygame as pg
 
 
 class Label:
-    def __init__(self, pos, text, font=None, font_size=32, font_color=pg.Color("white")):
+    def __init__(
+        self, pos, text, font=None, font_size=32, font_color=pg.Color("white")
+    ):
         self.position = pos
         self.text = text
         self.font_color = font_color
@@ -19,8 +21,16 @@ class Label:
 
 
 class MultiLineLabel:
-    def __init__(self, pos, text, font=None, font_size=32, font_color=pg.Color("white"),
-                 halign="CENTER", valign="CENTER"):
+    def __init__(
+        self,
+        pos,
+        text,
+        font=None,
+        font_size=32,
+        font_color=pg.Color("white"),
+        halign="CENTER",
+        valign="CENTER",
+    ):
         self.position = pos
         self.text = text
 
@@ -40,18 +50,20 @@ class MultiLineLabel:
             if self.h_alignment == "LEFT":
                 off_x = self.position[0]
             elif self.h_alignment == "RIGHT":
-                off_x = ((_size[0] - l_size) + self.position[0])
+                off_x = (_size[0] - l_size) + self.position[0]
             else:
-                off_x = ((_size[0] - l_size) / 2 + self.position[0])
+                off_x = (_size[0] - l_size) / 2 + self.position[0]
 
             # Determine y alignment
             v_size = len(lines) * self.font_size
             if self.v_alignment == "TOP":
-                off_y = ((idx * self.font_size) + self.position[1])
+                off_y = (idx * self.font_size) + self.position[1]
             elif self.v_alignment == "BOTTOM":
-                off_y = ((_size[1] - v_size) + (idx * self.font_size) + self.position[1])
+                off_y = (_size[1] - v_size) + (idx * self.font_size) + self.position[1]
             else:
-                off_y = ((_size[1] - v_size) / 2 + (idx * self.font_size) + self.position[1])
+                off_y = (
+                    (_size[1] - v_size) / 2 + (idx * self.font_size) + self.position[1]
+                )
 
             screen.blit(self.font.render(l, True, self.color), (off_x, off_y))
 
@@ -90,8 +102,15 @@ class Clickable:
 
 
 class Button(Hoverable, Clickable):
-    def __init__(self, pos, size, text, text_color=pg.Color("white"),
-                 default_color=pg.Color("red"), hover_color=pg.Color("maroon")):
+    def __init__(
+        self,
+        pos,
+        size,
+        text,
+        text_color=pg.Color("white"),
+        default_color=pg.Color("red"),
+        hover_color=pg.Color("maroon"),
+    ):
         Hoverable.__init__(self, default_color, hover_color)
         Clickable.__init__(self)
 

@@ -48,22 +48,22 @@ class Game:
 
     def check_high_score(self):
         cur_dir = os.path.dirname(os.path.abspath(__file__))
-        data_file = os.path.join(cur_dir, 'game.data')
+        data_file = os.path.join(cur_dir, "game.data")
 
         if Path(data_file).exists():
-            data = pickle.load(open(data_file, 'rb'))
-            if data['highscore'] < self.GAME_SCORE:
-                with open(data_file, 'wb') as file:
-                    pickle.dump({'highscore' : self.GAME_SCORE}, file)
+            data = pickle.load(open(data_file, "rb"))
+            if data["highscore"] < self.GAME_SCORE:
+                with open(data_file, "wb") as file:
+                    pickle.dump({"highscore": self.GAME_SCORE}, file)
         else:
-            with open(data_file, 'wb') as file:
-                pickle.dump({'highscore' : self.GAME_SCORE}, file)
+            with open(data_file, "wb") as file:
+                pickle.dump({"highscore": self.GAME_SCORE}, file)
 
     def get_high_score(self):
         cur_dir = os.path.dirname(os.path.abspath(__file__))
-        data_file = os.path.join(cur_dir, 'game.data')
+        data_file = os.path.join(cur_dir, "game.data")
         if Path(data_file).exists():
-            return pickle.load(open(data_file, 'rb'))['highscore']
+            return pickle.load(open(data_file, "rb"))["highscore"]
         else:
             return 0
 
@@ -89,7 +89,9 @@ class Game:
                 txt = """
                 HIGHSCORE
                 {}
-                """.format(self.get_high_score())
+                """.format(
+                    self.get_high_score()
+                )
                 self.main_menu.highscore.text = txt
 
             self.main_menu.play_btn.on_click(self.play_game)
@@ -123,7 +125,9 @@ class Game:
             self.screen.fill(BACKGROUND_COLOR)
 
             # Score
-            score_surf = self.score.render("Score  {} ".format(self.GAME_SCORE), True, (255, 255, 255))
+            score_surf = self.score.render(
+                "Score  {} ".format(self.GAME_SCORE), True, (255, 255, 255)
+            )
             self.screen.blit(score_surf, (self.screen_rect.width - 100, 5))
 
             self.timer.draw(self.screen)

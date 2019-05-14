@@ -11,7 +11,7 @@ def main():
     """
     Initialize; create an App; and start the main loop.
     """
-    os.environ['SDL_VIDEO_CENTERED'] = '1'
+    os.environ["SDL_VIDEO_CENTERED"] = "1"
     pg.init()
     pg.display.set_caption(CAPTION)
     pg.display.set_mode(SCREEN_SIZE)
@@ -20,5 +20,5 @@ def main():
     sys.exit()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

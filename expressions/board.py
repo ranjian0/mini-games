@@ -33,7 +33,7 @@ class Tile:
         self.tile_status = self.PASS
 
     def make_text(self):
-        font = pg.font.SysFont('sans serif', 50)
+        font = pg.font.SysFont("sans serif", 50)
         label = font.render(str(self.value), True, pg.Color("black"))
         label_rect = label.get_rect(center=self.pos)
 
@@ -41,9 +41,9 @@ class Tile:
 
     def draw(self, surface):
         tile = {
-            self.DEFAULT : self.tile_yellow,
-            self.FAIL : self.tile_red,
-            self.PASS : self.tile_green,
+            self.DEFAULT: self.tile_yellow,
+            self.FAIL: self.tile_red,
+            self.PASS: self.tile_green,
         }.get(self.tile_status)
 
         surface.blit(tile, tile.get_rect(center=self.pos))
@@ -67,7 +67,7 @@ class Target(object):
         self.text, self.text_rect = self.setup_font()
 
     def setup_font(self):
-        font = pg.font.SysFont('timesnewroman', 25)
+        font = pg.font.SysFont("timesnewroman", 25)
         label = font.render(str(self.value), True, pg.Color("white"))
         label_rect = label.get_rect(center=self.pos)
 
@@ -85,7 +85,7 @@ class Target(object):
 
         if fnum < snum:
             fnum, snum = snum, fnum
-        operation = random.choice(['+', '-', '*'])
+        operation = random.choice(["+", "-", "*"])
 
         text = "{0} {1} {2}".format(fnum, operation, snum)
         self.result = eval(text)
@@ -116,10 +116,12 @@ class Board(object):
 
     def tile_positions(self):
         # Create positions for top, left, bottom and right part of screen
-        positions = [(self.screen_rect.size[0] * .5, self.screen_rect.size[1] * .25),  # TOP
-                     (self.screen_rect.size[0] * .75, self.screen_rect.size[1] * .5),  # RIGHT
-                     (self.screen_rect.size[0] * .5, self.screen_rect.size[1] * .75),  # BOTTOM
-                     (self.screen_rect.size[0] * .25, self.screen_rect.size[1] * .5)]  # LEFT
+        positions = [
+            (self.screen_rect.size[0] * 0.5, self.screen_rect.size[1] * 0.25),  # TOP
+            (self.screen_rect.size[0] * 0.75, self.screen_rect.size[1] * 0.5),  # RIGHT
+            (self.screen_rect.size[0] * 0.5, self.screen_rect.size[1] * 0.75),  # BOTTOM
+            (self.screen_rect.size[0] * 0.25, self.screen_rect.size[1] * 0.5),
+        ]  # LEFT
 
         return positions
 

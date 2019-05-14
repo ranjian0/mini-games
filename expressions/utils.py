@@ -1,6 +1,7 @@
 import pygame as pg
 from pgmenu import Menu, Label, Button, MultiLineLabel
 
+
 class Timer:
     TIMER_SIZE = None
 
@@ -18,10 +19,21 @@ class Timer:
         img = pg.Surface(self.TIMER_SIZE).convert_alpha()
         img.fill((0, 0, 0, 0))
 
-        pg.draw.rect(img, pg.Color("black"),
-                     (self.pos[0], self.pos[1], self.TIMER_SIZE[0], self.TIMER_SIZE[1]))
-        pg.draw.rect(img, pg.Color("green"),
-                     (self.pos[0] + 5, self.pos[1] + 5, self.TIMER_SIZE[0] - 15, self.TIMER_SIZE[1] - 15))
+        pg.draw.rect(
+            img,
+            pg.Color("black"),
+            (self.pos[0], self.pos[1], self.TIMER_SIZE[0], self.TIMER_SIZE[1]),
+        )
+        pg.draw.rect(
+            img,
+            pg.Color("green"),
+            (
+                self.pos[0] + 5,
+                self.pos[1] + 5,
+                self.TIMER_SIZE[0] - 15,
+                self.TIMER_SIZE[1] - 15,
+            ),
+        )
 
         return img
 
@@ -39,9 +51,21 @@ class Timer:
         img.fill((0, 0, 0, 0))
 
         self.timer_size -= dt * 10
-        pg.draw.rect(img, pg.Color("black"), (self.pos[0], self.pos[1], self.TIMER_SIZE[0], self.TIMER_SIZE[1]))
-        pg.draw.rect(img, pg.Color("green"),
-                     (self.pos[0] + 5, self.pos[1] + 5, self.timer_size, self.TIMER_SIZE[1] - 15))
+        pg.draw.rect(
+            img,
+            pg.Color("black"),
+            (self.pos[0], self.pos[1], self.TIMER_SIZE[0], self.TIMER_SIZE[1]),
+        )
+        pg.draw.rect(
+            img,
+            pg.Color("green"),
+            (
+                self.pos[0] + 5,
+                self.pos[1] + 5,
+                self.timer_size,
+                self.TIMER_SIZE[1] - 15,
+            ),
+        )
 
         self.timer = img
         self.timer_rect = self.timer.get_rect()
@@ -61,7 +85,6 @@ class Timer:
             self.timer_size -= d
 
 
-
 class MainMenu(Menu):
     active = True
 
@@ -72,15 +95,31 @@ class MainMenu(Menu):
         self.image = pg.image.load("res/mainmenu_background.png")
 
         # Add widgets
-        self.play_btn = Button((250, 200), (250, 50), "PLAY", pg.Color("white"), pg.Color("maroon"), pg.Color("red"))
-        self.exit_btn = Button((250, 300), (250, 50), "EXIT", pg.Color("white"), pg.Color("maroon"), pg.Color("red"))
+        self.play_btn = Button(
+            (250, 200),
+            (250, 50),
+            "PLAY",
+            pg.Color("white"),
+            pg.Color("maroon"),
+            pg.Color("red"),
+        )
+        self.exit_btn = Button(
+            (250, 300),
+            (250, 50),
+            "EXIT",
+            pg.Color("white"),
+            pg.Color("maroon"),
+            pg.Color("red"),
+        )
         credit = """
         Created by
         Ian Ichung'wah Karanja
         @2017
         """
         self.credit = MultiLineLabel((0, 0), credit, valign="BOTTOM", font_size=18)
-        self.highscore = MultiLineLabel((150, 0), "", valign="BOTTOM", font_size=20, font_color=pg.Color("red"))
+        self.highscore = MultiLineLabel(
+            (150, 0), "", valign="BOTTOM", font_size=20, font_color=pg.Color("red")
+        )
 
         # Add widgets to menu canvas
         self.add(self.play_btn)
@@ -100,10 +139,30 @@ class GameOver(Menu):
 
         # Add widgets
         self.score = Label((250, 50), "", font_size=56, font_color=pg.Color("red"))
-        self.restart_btn = Button((250, 150), (250, 50), "RESTART", pg.Color("white"), pg.Color("maroon"),
-                                  pg.Color("red"))
-        self.mm_btn = Button((250, 250), (250, 50), "MAIN MENU", pg.Color("white"), pg.Color("maroon"), pg.Color("red"))
-        self.exit_btn = Button((250, 350), (250, 50), "EXIT", pg.Color("white"), pg.Color("maroon"), pg.Color("red"))
+        self.restart_btn = Button(
+            (250, 150),
+            (250, 50),
+            "RESTART",
+            pg.Color("white"),
+            pg.Color("maroon"),
+            pg.Color("red"),
+        )
+        self.mm_btn = Button(
+            (250, 250),
+            (250, 50),
+            "MAIN MENU",
+            pg.Color("white"),
+            pg.Color("maroon"),
+            pg.Color("red"),
+        )
+        self.exit_btn = Button(
+            (250, 350),
+            (250, 50),
+            "EXIT",
+            pg.Color("white"),
+            pg.Color("maroon"),
+            pg.Color("red"),
+        )
         credit = """
         Created by
         Ian Ichung'wah Karanja

@@ -28,8 +28,8 @@ class Player(Sprite):
         self.health = 100
 
         # Sounds
-        self.shoot = pg.mixer.Sound(media_path('gunshot.wav'))
-        self.hit = pg.mixer.Sound(media_path('hit.wav'))
+        self.shoot = pg.mixer.Sound(media_path("gunshot.wav"))
+        self.hit = pg.mixer.Sound(media_path("hit.wav"))
 
     def make_image(self, size):
 
@@ -37,9 +37,9 @@ class Player(Sprite):
         img.fill(TRANSPARENT)
         rect = img.get_rect()
 
-        pg.draw.rect(img, pg.Color('black'), [rect.center[0] - 5, 25, 10, 50])
-        pg.draw.ellipse(img, pg.Color('black'), rect.inflate(-10, -10))
-        pg.draw.ellipse(img, pg.Color('tomato'), rect.inflate(-20, -20))
+        pg.draw.rect(img, pg.Color("black"), [rect.center[0] - 5, 25, 10, 50])
+        pg.draw.ellipse(img, pg.Color("black"), rect.inflate(-10, -10))
+        pg.draw.ellipse(img, pg.Color("tomato"), rect.inflate(-20, -20))
 
         return img
 
@@ -88,7 +88,9 @@ class Player(Sprite):
     def shoot_bullet(self):
         self.shoot.play()
         pos = pg.mouse.get_pos()
-        vec = pg.math.Vector2(pos[0] - self.true_pos[0], pos[1] - self.true_pos[1]).normalize()
+        vec = pg.math.Vector2(
+            pos[0] - self.true_pos[0], pos[1] - self.true_pos[1]
+        ).normalize()
         gun_pos = (self.rect.centerx + (vec.x * 25), self.rect.centery + (vec.y * 25))
 
         self.bullets.add(Bullet(gun_pos, self.angle))

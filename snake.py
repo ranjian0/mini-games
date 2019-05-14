@@ -3,15 +3,16 @@ import random
 import pygame as pg
 
 # GLOBALS
-FPS         = 5
-SIZE        = 500, 500
-CAPTION     = "Snake"
-BACKGROUND  = 100, 100, 100
+FPS = 5
+SIZE = 500, 500
+CAPTION = "Snake"
+BACKGROUND = 100, 100, 100
 
-GS          = 25
-keys        = [pg.K_w, pg.K_s, pg.K_a, pg.K_d]
-opt_keys    = [pg.K_UP, pg.K_DOWN, pg.K_LEFT, pg.K_RIGHT]
-directions  = [(0, -1), (0, 1), (-1, 0), (1, 0)]
+GS = 25
+keys = [pg.K_w, pg.K_s, pg.K_a, pg.K_d]
+opt_keys = [pg.K_UP, pg.K_DOWN, pg.K_LEFT, pg.K_RIGHT]
+directions = [(0, -1), (0, 1), (-1, 0), (1, 0)]
+
 
 class Snake:
     """ Make definitions for snake properties and behaviour"""
@@ -34,7 +35,7 @@ class Snake:
         px, py = self.pos
         s = self.size
         for i in range(self.segments):
-            r = pg.Rect(px, py+(i*s), s, s)
+            r = pg.Rect(px, py + (i * s), s, s)
             segs.append(r)
         return segs
 
@@ -43,19 +44,21 @@ class Snake:
 
         for seg in self.snake:
             pg.draw.rect(surface, self.color, seg)
-            pg.draw.rect(surface, pg.Color('black'), seg, 3)
+            pg.draw.rect(surface, pg.Color("black"), seg, 3)
 
     def event(self, ev):
         """Handle all events accepted by the snake"""
 
         # Check for invalid moves
         # e.g. moving up while the snake is moving down
-        edge_case = lambda d : any([
-            d == (0, 1) and self.direction == (0, -1),
-            d == (0, -1) and self.direction == (0, 1),
-            d == (1, 0) and self.direction == (-1, 0),
-            d == (-1, 0) and self.direction == (1, 0)
-        ])
+        edge_case = lambda d: any(
+            [
+                d == (0, 1) and self.direction == (0, -1),
+                d == (0, -1) and self.direction == (0, 1),
+                d == (1, 0) and self.direction == (-1, 0),
+                d == (-1, 0) and self.direction == (1, 0),
+            ]
+        )
 
         # Listen to user events and change snake direction
         if ev.type == pg.KEYDOWN:
@@ -74,13 +77,13 @@ class Snake:
         sx, sy = self.snake[0].size
         if self.direction == (0, -1):
             px, py = self.snake[0].topleft
-            self.snake.insert(0, pg.Rect(px, py-sy, sx, sy))
+            self.snake.insert(0, pg.Rect(px, py - sy, sx, sy))
         if self.direction == (0, 1):
             px, py = self.snake[0].bottomleft
             self.snake.insert(0, pg.Rect(px, py, sx, sy))
         if self.direction == (-1, 0):
             px, py = self.snake[0].topleft
-            self.snake.insert(0, pg.Rect(px-sx, py, sx, sy))
+            self.snake.insert(0, pg.Rect(px - sx, py, sx, sy))
         if self.direction == (1, 0):
             px, py = self.snake[0].topright
             self.snake.insert(0, pg.Rect(px, py, sx, sy))
@@ -96,8 +99,8 @@ class Snake:
 
     def collide_walls(self):
         width, height = pg.display.get_surface().get_size()
-        width -= self.size/2
-        height -= self.size/2
+        width -= self.size / 2
+        height -= self.size / 2
 
         beyond_x = self.snake[0].x > width or self.snake[0].x < 0
         beyond_y = self.snake[0].y > height or self.snake[0].y < 50
@@ -111,6 +114,7 @@ class Snake:
                 return True
         return False
 
+
 class Target:
     def __init__(self, pos, size, color):
         self.pos = pos
@@ -123,9 +127,8 @@ class Target:
         sx, sy = self.size
 
         pg.draw.rect(surface, self.color, [px, py, sx, sy])
-        pg.draw.rect(surface, pg.Color('black'), [px, py, sx, sy], 3)
+        pg.draw.rect(surface, pg.Color("black"), [px, py, sx, sy], 3)
         self.rect = pg.Rect(px, py, sx, sy)
-
 
     def spawn(self, snake):
         screen = pg.display.get_surface()
@@ -135,18 +138,22 @@ class Target:
         invalid = [self.pos]
         invalid.extend([(s.x, s.y) for s in snake.snake])
 
-        valid = [(x*GS, y*GS) for x in range(1, (SIZE[0] // GS))
-                              for y in range(2, (SIZE[1] // GS))
-                              if (x*GS, y*GS) not in invalid]
+        valid = [
+            (x * GS, y * GS)
+            for x in range(1, (SIZE[0] // GS))
+            for y in range(2, (SIZE[1] // GS))
+            if (x * GS, y * GS) not in invalid
+        ]
 
         self.pos = random.choice(valid)
 
+
 def draw_score(surface, score):
-    font_name   = pg.font.match_font('arial')
+    font_name = pg.font.match_font("arial")
     options = [
-        ("Score",    12, (25, 12), "black"),
+        ("Score", 12, (25, 12), "black"),
         (str(score), 15, (17, 30), "white"),
-        (CAPTION,    40, (SIZE[0]//2, 25), (80, 80, 80)),
+        (CAPTION, 40, (SIZE[0] // 2, 25), (80, 80, 80)),
     ]
 
     # -- header highlight
@@ -165,54 +172,57 @@ def draw_score(surface, score):
 
         surface.blit(surf, rect)
 
+
 def draw_game_over(surface, score):
-    font_name   = pg.font.match_font('arial')
+    font_name = pg.font.match_font("arial")
 
     # -- Draw Game Over Text
-    font        = pg.font.Font(font_name, 40)
+    font = pg.font.Font(font_name, 40)
     font.set_bold(True)
 
-    tsurface    = font.render("GAME OVER", True, pg.Color('red'))
-    text_rect   = tsurface.get_rect()
-    text_rect.center = (SIZE[0]//2, 100)
+    tsurface = font.render("GAME OVER", True, pg.Color("red"))
+    text_rect = tsurface.get_rect()
+    text_rect.center = (SIZE[0] // 2, 100)
     surface.blit(tsurface, text_rect)
 
-
     # -- Draw score text
-    font        = pg.font.Font(font_name, 20)
+    font = pg.font.Font(font_name, 20)
     font.set_bold(True)
 
-    tsurface    = font.render("Your Score " + str(score), True, pg.Color('white'))
-    text_rect   = tsurface.get_rect()
-    text_rect.center = (SIZE[0]//2, 200)
+    tsurface = font.render("Your Score " + str(score), True, pg.Color("white"))
+    text_rect = tsurface.get_rect()
+    text_rect.center = (SIZE[0] // 2, 200)
     surface.blit(tsurface, text_rect)
 
     # -- Draw instructions
-    font        = pg.font.Font(font_name, 12)
+    font = pg.font.Font(font_name, 12)
     font.set_bold(True)
     font.set_italic(True)
 
-    tsurface    = font.render("Press Escape to QUIT, Space to RESTART", True, pg.Color('white'))
-    text_rect   = tsurface.get_rect()
-    text_rect.center = (SIZE[0]//2, SIZE[1]-20)
+    tsurface = font.render(
+        "Press Escape to QUIT, Space to RESTART", True, pg.Color("white")
+    )
+    text_rect = tsurface.get_rect()
+    text_rect.center = (SIZE[0] // 2, SIZE[1] - 20)
     surface.blit(tsurface, text_rect)
+
 
 def main():
 
     # Pygame Context
     pg.init()
     pg.display.set_caption(CAPTION)
-    screen  = pg.display.set_mode(SIZE, 0, 32)
-    clock   = pg.time.Clock()
+    screen = pg.display.set_mode(SIZE, 0, 32)
+    clock = pg.time.Clock()
 
     # Game Objects
-    snake   = Snake((225, 225), 5, pg.Color('red'))
-    target  = Target((100, 100), (GS, GS), pg.Color('green'))
+    snake = Snake((225, 225), 5, pg.Color("red"))
+    target = Target((100, 100), (GS, GS), pg.Color("green"))
 
     # Game Variables
-    score    = 0
+    score = 0
     gameover = False
-    paused   = False
+    paused = False
 
     # Game Loop
     while True:
@@ -229,9 +239,9 @@ def main():
 
                 if gameover and event.key == pg.K_SPACE:
                     # -- reset items
-                    score   = 0
-                    snake   = Snake((225, 225), 5, pg.Color('red'))
-                    target  = Target((100, 100), (GS, GS), pg.Color('green'))
+                    score = 0
+                    snake = Snake((225, 225), 5, pg.Color("red"))
+                    target = Target((100, 100), (GS, GS), pg.Color("green"))
 
                     # -- resume
                     gameover = False
@@ -263,5 +273,6 @@ def main():
             if snake.collide_walls() or snake.collide_self():
                 gameover = True
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
