@@ -1,4 +1,4 @@
 *.pyc
 *.data
 __pycache__
-.sublime-workspace
+*.sublime-workspace
