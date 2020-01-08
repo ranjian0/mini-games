@@ -5,8 +5,6 @@ import random
 import pygame as pg
 import itertools as it
 from pathlib import Path
-from pprint import pprint
-from pygame.math import Vector2 as vec2
 
 
 CAPTION = "2048"
@@ -389,7 +387,7 @@ class Board:
                 reverse=True if self.direction[1] > 0 else False,
             )
 
-        moving = []
+
         for idx, idy, tile in tiles:
 
             # -- Calculate next position on board based on direction
